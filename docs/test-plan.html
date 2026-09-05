@@ -1,0 +1,324 @@
+<title>Dental Clinic Test Plan</title>
+<style>
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #12161c; --surface: #1a2029; --surface-2: #202834;
+      --text: #e7eaee; --muted: #9aa4b2; --border: #2a313c;
+      --accent: #5fb3a3; --accent-soft: #1c2e2b;
+      --pass-bg: #17301f; --pass-text: #7fd99a; --pass-border: #2c5c3a;
+      --fail-bg: #3a1c1c; --fail-text: #f3a3a3; --fail-border: #6b2c2c;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #12161c; --surface: #1a2029; --surface-2: #202834;
+    --text: #e7eaee; --muted: #9aa4b2; --border: #2a313c;
+    --accent: #5fb3a3; --accent-soft: #1c2e2b;
+    --pass-bg: #17301f; --pass-text: #7fd99a; --pass-border: #2c5c3a;
+    --fail-bg: #3a1c1c; --fail-text: #f3a3a3; --fail-border: #6b2c2c;
+  }
+  :root {
+    --bg: #f7f8fa; --surface: #ffffff; --surface-2: #f0f2f5;
+    --text: #1b2430; --muted: #5b6472; --border: #e1e4e8;
+    --accent: #2f6f62; --accent-soft: #e6f0ee;
+    --pass-bg: #eaf7ee; --pass-text: #1e6b3a; --pass-border: #b9e3c5;
+    --fail-bg: #fdecec; --fail-text: #a02323; --fail-border: #f3bcbc;
+
+    --serif: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, "Cascadia Mono", "Segoe UI Mono", Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--text); font-family: var(--sans);
+    line-height: 1.6; margin: 0; padding: 3rem 1.5rem 6rem;
+  }
+  .page { max-width: 900px; margin: 0 auto; }
+  header.masthead { border-bottom: 1px solid var(--border); padding-bottom: 1.75rem; margin-bottom: 2.5rem; }
+  .eyebrow {
+    font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--accent); margin: 0 0 0.6rem;
+  }
+  h1 {
+    font-family: var(--serif); font-size: clamp(1.9rem, 4vw, 2.5rem);
+    font-weight: 700; margin: 0 0 0.5rem; text-wrap: balance;
+  }
+  .subtitle { color: var(--muted); font-size: 1.02rem; max-width: 65ch; }
+  .meta-row {
+    display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 1.25rem;
+    font-size: 0.85rem; color: var(--muted);
+  }
+  .meta-row strong { color: var(--text); font-weight: 600; }
+  nav.toc { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 3rem; }
+  nav.toc a {
+    font-family: var(--mono); font-size: 0.8rem; color: var(--text); text-decoration: none;
+    border: 1px solid var(--border); border-radius: 999px; padding: 0.4rem 0.9rem; background: var(--surface);
+  }
+  nav.toc a:hover, nav.toc a:focus-visible { border-color: var(--accent); color: var(--accent); }
+  section { margin-bottom: 3.5rem; scroll-margin-top: 1.5rem; }
+  .section-head { display: flex; align-items: baseline; gap: 0.9rem; margin-bottom: 1rem; }
+  .section-num { font-family: var(--serif); font-size: 2.1rem; color: var(--accent); line-height: 1; }
+  h2 { font-family: var(--serif); font-size: 1.5rem; margin: 0; text-wrap: balance; }
+  h3 { font-family: var(--serif); font-size: 1.15rem; margin: 2rem 0 0.75rem; }
+  section > p { max-width: 72ch; }
+  .callout {
+    border-left: 3px solid var(--accent); background: var(--accent-soft);
+    padding: 0.9rem 1.1rem; border-radius: 0 8px 8px 0; margin: 1.25rem 0;
+  }
+  .callout p { margin: 0; max-width: none; }
+  .callout p + p { margin-top: 0.6rem; }
+  .callout-label {
+    font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--accent); display: block; margin-bottom: 0.4rem; font-weight: 600;
+  }
+  code {
+    font-family: var(--mono); background: var(--surface-2); padding: 0.1rem 0.4rem;
+    border-radius: 4px; font-size: 0.9em;
+  }
+  .table-wrap { overflow-x: auto; margin: 1.25rem 0; border: 1px solid var(--border); border-radius: 10px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.88rem; background: var(--surface); }
+  th, td { text-align: left; padding: 0.65rem 0.9rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th {
+    font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--muted); background: var(--surface-2); white-space: nowrap;
+  }
+  tr:last-child td { border-bottom: none; }
+  td code { white-space: nowrap; }
+  .badge {
+    display: inline-block; font-family: var(--mono); font-size: 0.72rem; font-weight: 600;
+    padding: 0.15rem 0.55rem; border-radius: 999px; border: 1px solid; white-space: nowrap;
+  }
+  .badge-pass { background: var(--pass-bg); color: var(--pass-text); border-color: var(--pass-border); }
+  .badge-fail { background: var(--fail-bg); color: var(--fail-text); border-color: var(--fail-border); }
+  .console {
+    font-family: var(--mono); font-size: 0.82rem; background: #10151c; color: #d6dbe1;
+    border-radius: 10px; padding: 1.1rem 1.3rem; overflow-x: auto; white-space: pre; line-height: 1.55;
+    border: 1px solid #2a313c;
+  }
+  .console .ok { color: #7fd99a; }
+  .console .bad { color: #f3a3a3; }
+  .console .dim { color: #7c8695; }
+  figcaption { font-size: 0.85rem; color: var(--muted); font-family: var(--mono); margin-top: 0.6rem; }
+  .cycle-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; margin: 1.5rem 0; }
+  @media (min-width: 720px) { .cycle-grid { grid-template-columns: 1fr 1fr; } }
+  .cycle-card { border: 1px solid var(--border); border-radius: 10px; padding: 1.1rem 1.2rem; background: var(--surface); }
+  .cycle-card h4 {
+    margin: 0 0 0.5rem; font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  .cycle-card.red h4 { color: var(--fail-text); }
+  .cycle-card.green h4 { color: var(--pass-text); }
+  .cycle-card p { margin: 0; font-size: 0.88rem; max-width: none; }
+  .trace-note { font-size: 0.85rem; color: var(--muted); margin-top: 0.5rem; }
+  footer {
+    border-top: 1px solid var(--border); margin-top: 3rem; padding-top: 1.5rem;
+    color: var(--muted); font-size: 0.85rem;
+  }
+</style>
+
+<div class="page">
+
+  <header class="masthead">
+    <p class="eyebrow">CIS6003 &middot; Task C &middot; Testing</p>
+    <h1>Test Plan &amp; Test-Driven Development</h1>
+    <p class="subtitle">Test rationale, test plan, test data, and a live red&ndash;green TDD cycle for the
+      Sunrise Dental Clinic appointment system.</p>
+    <div class="meta-row">
+      <span><strong>Framework:</strong> JUnit 5 (Jupiter)</span>
+      <span><strong>Support:</strong> Spring Boot Test, MockMvc</span>
+      <span><strong>Automation runner:</strong> Maven Surefire (<code>mvn test</code>)</span>
+      <span><strong>Suite size:</strong> 8 tests, 3 classes</span>
+    </div>
+  </header>
+
+  <nav class="toc" aria-label="Section navigation">
+    <a href="#rationale">01 &middot; Rationale</a>
+    <a href="#plan">02 &middot; Test Plan &amp; Data</a>
+    <a href="#tdd">03 &middot; TDD Cycle</a>
+    <a href="#evidence">04 &middot; Evidence</a>
+    <a href="#traceability">05 &middot; Traceability</a>
+  </nav>
+
+  <section id="rationale">
+    <div class="section-head"><span class="section-num">01</span><h2>Test Rationale</h2></div>
+    <p>The system's value sits almost entirely in <code>AppointmentService</code> &mdash; it is the one class
+      that enforces every business rule the clinic depends on (no double-booking, valid contact numbers,
+      no past-dated or out-of-hours appointments, correct bill totals). Controllers and repositories are
+      thin by comparison: Spring Data JPA generates the repository implementations, and the controllers
+      only translate HTTP requests into service calls. Testing effort was therefore concentrated where the
+      risk actually is &mdash; the service layer &mdash; with a smaller set of tests confirming the REST
+      layer wires up correctly and the Spring context itself boots without configuration errors.</p>
+    <p>Each service test targets exactly one business rule and asserts one outcome, so a failing test
+      immediately identifies which rule broke, rather than requiring the developer to re-derive it from a
+      generic "something is wrong" failure.</p>
+  </section>
+
+  <section id="plan">
+    <div class="section-head"><span class="section-num">02</span><h2>Test Plan &amp; Test Data</h2></div>
+    <p>The table below is the test plan: each row is one JUnit test, the concrete input data it uses, and
+      the outcome it verifies. This mirrors the branches shown in the Task A sequence diagrams for
+      Register Appointment and Generate Bill.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>#</th><th>Test case</th><th>Test data (input)</th><th>Expected outcome</th><th>Result</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><code>registerAppointment_succeedsAndGeneratesAppointmentNumber</code></td>
+            <td>Valid patient, Dr. Fernando, tomorrow, 10:00</td>
+            <td>Appointment saved; number matches <code>APT-####</code></td>
+            <td><span class="badge badge-pass">PASS</span></td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td><code>registerAppointment_rejectsInvalidContactNumber</code></td>
+            <td>Contact number <code>"123"</code> (not 10 digits)</td>
+            <td><code>ValidationException</code> thrown</td>
+            <td><span class="badge badge-pass">PASS</span></td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td><code>registerAppointment_rejectsDoubleBookingForSameDentistDateAndTime</code></td>
+            <td>Dr. Jayasuriya booked twice for the same date + 14:30</td>
+            <td><code>DoubleBookingException</code> thrown on the second booking</td>
+            <td><span class="badge badge-pass">PASS</span></td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td><code>generateBill_calculatesConsultationFeePlusTreatmentPrice</code></td>
+            <td>Treatment = "Scaling &amp; Cleaning" (Rs. 3,000)</td>
+            <td>Total = Rs. 200 consultation fee + Rs. 3,000 = <code>Rs. 3,200.00</code>; <code>billed = true</code></td>
+            <td><span class="badge badge-pass">PASS</span></td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td><code>registerAppointment_rejectsAppointmentOutsideClinicOperatingHours</code></td>
+            <td>Appointment time <code>20:00</code> (clinic closes 18:00)</td>
+            <td><code>ValidationException</code> thrown</td>
+            <td><span class="badge badge-pass">PASS</span></td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td><code>health_returnsUp</code> (REST)</td>
+            <td><code>GET /api/health</code></td>
+            <td>HTTP 200, JSON <code>{"status":"UP"}</code></td>
+            <td><span class="badge badge-pass">PASS</span></td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td><code>createAppointment_thenFetchByNumber_returnsCreatedRecord</code> (REST)</td>
+            <td><code>POST /api/appointments</code> with valid JSON payload, then <code>GET /api/appointments/{no}</code></td>
+            <td>HTTP 201 on create, HTTP 200 on fetch, patient name matches</td>
+            <td><span class="badge badge-pass">PASS</span></td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td><code>contextLoads</code></td>
+            <td>&mdash;</td>
+            <td>Full Spring application context starts without error</td>
+            <td><span class="badge badge-pass">PASS</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <span class="callout-label">Test isolation</span>
+      <p>Every service-layer test is annotated <code>@Transactional</code>, so each test's writes are rolled
+        back automatically at the end of the test method. This means the shared file-based H2 database used
+        by the running application is never permanently polluted by test data, and tests do not interfere
+        with one another regardless of execution order.</p>
+    </div>
+  </section>
+
+  <section id="tdd">
+    <div class="section-head"><span class="section-num">03</span><h2>Test-Driven Development in This Project</h2></div>
+    <p>Test case 5 above (clinic operating hours) was built using a genuine red&ndash;green TDD cycle, run
+      live during development, to demonstrate the practice rather than just describe it:</p>
+
+    <div class="cycle-grid">
+      <div class="cycle-card red">
+        <h4>1 &middot; Red</h4>
+        <p>The test <code>registerAppointment_rejectsAppointmentOutsideClinicOperatingHours</code> was
+          written first, asserting that booking an appointment at 20:00 throws
+          <code>ValidationException</code>. At this point <code>AppointmentService.validate()</code> had no
+          such check. Running <code>mvn test</code> produced exactly one failure, with the message
+          <code>"Expected ValidationException to be thrown, but nothing was thrown."</code> &mdash; confirming
+          the test correctly detects the missing behaviour.</p>
+      </div>
+      <div class="cycle-card green">
+        <h4>2 &middot; Green</h4>
+        <p>Two constants (<code>CLINIC_OPENING_TIME = 08:00</code>, <code>CLINIC_CLOSING_TIME = 18:00</code>)
+          and one guard clause were added to <code>validate()</code> &mdash; the minimum code needed to
+          satisfy the assertion. Re-running the full suite produced 8/8 passing, with no other test
+          affected, confirming the fix was both correct and non-regressive.</p>
+      </div>
+    </div>
+    <p class="trace-note">No further refactor step was needed here: the guard clause follows the exact same
+      shape as the five validation checks already in <code>validate()</code>, so introducing it did not
+      create duplication or reveal a better structure to extract.</p>
+
+    <div class="callout">
+      <span class="callout-label">Why only this one rule was built test-first</span>
+      <p>The other seven tests were written to characterise behaviour that already existed from earlier
+        implementation work (registration, billing, the REST layer), so they function as a regression
+        safety net rather than a red&ndash;green demonstration &mdash; which is an equally valid and common
+        use of automated tests, just not literal TDD. The operating-hours rule was deliberately introduced
+        test-first specifically to produce an honest, reproducible record of the TDD cycle for this
+        document, rather than presenting it as if the whole codebase had been built rule-by-rule from a
+        blank test file, which would not accurately describe how the project was actually developed.</p>
+    </div>
+  </section>
+
+  <section id="evidence">
+    <div class="section-head"><span class="section-num">04</span><h2>Evidence &mdash; Console Output</h2></div>
+    <p>Captured directly from <code>mvn test</code> runs (Maven Surefire), reproducing the two states of the
+      cycle above.</p>
+
+    <h3>Red &mdash; before the fix</h3>
+    <div class="console">com.sunrise.dental.service.AppointmentServiceTest
+<span class="bad">registerAppointment_rejectsAppointmentOutsideClinicOperatingHours -- Time elapsed: 0.006 s &lt;&lt;&lt; FAILURE!</span>
+org.opentest4j.AssertionFailedError: <span class="bad">Expected com.sunrise.dental.exception.ValidationException to be thrown, but nothing was thrown.</span>
+    at com.sunrise.dental.service.AppointmentServiceTest.registerAppointment_rejectsAppointmentOutsideClinicOperatingHours(AppointmentServiceTest.java)
+
+<span class="dim">[ERROR] Tests run: 5, Failures: 1, Errors: 0, Skipped: 0</span>
+<span class="bad">[INFO] BUILD FAILURE</span></div>
+    <figcaption>Captured before <code>validate()</code> included the operating-hours guard clause.</figcaption>
+
+    <h3>Green &mdash; after the fix</h3>
+    <div class="console">[INFO] Running com.sunrise.dental.DentalApplicationTests
+<span class="ok">[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0</span> -- in DentalApplicationTests
+[INFO] Running com.sunrise.dental.api.AppointmentRestControllerTest
+<span class="ok">[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0</span> -- in AppointmentRestControllerTest
+[INFO] Running com.sunrise.dental.service.AppointmentServiceTest
+<span class="ok">[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0</span> -- in AppointmentServiceTest
+
+<span class="ok">[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0</span>
+<span class="ok">[INFO] BUILD SUCCESS</span></div>
+    <figcaption>Captured after adding the two-line guard clause &mdash; all 8 tests pass, no regressions.</figcaption>
+  </section>
+
+  <section id="traceability" style="margin-bottom: 1rem;">
+    <div class="section-head"><span class="section-num">05</span><h2>Traceability &mdash; Requirement to Test</h2></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Brief requirement</th><th>Covered by</th></tr></thead>
+        <tbody>
+          <tr><td>Register New Appointment (store patient &amp; appointment details)</td><td>Test 1</td></tr>
+          <tr><td>Input validation, restrict invalid entries</td><td>Tests 2, 5</td></tr>
+          <tr><td>No double-booking (design assumption, documented in Task A)</td><td>Test 3</td></tr>
+          <tr><td>Calculate and Print Bill</td><td>Test 4</td></tr>
+          <tr><td>Distributed application with web services</td><td>Tests 6, 7</td></tr>
+          <tr><td>Overall application wiring / Spring configuration</td><td>Test 8</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    Sunrise Dental Clinic Appointment &amp; Patient Management System &middot; CIS6003 Advanced Programming
+    &middot; Task C supporting document
+  </footer>
+
+</div>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Help - Sunrise Dental Clinic</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragments/nav :: nav}"></div>
+<div class="container" style="max-width: 800px;">
+    <h2>Help Section</h2>
+
+    <h5 class="mt-4">1. Register New Appointment</h5>
+    <p>Go to <strong>Register</strong>, fill in the patient's details, choose a treatment type, and pick a future
+        date and time. The contact number must be exactly 10 digits. A unique appointment number
+        (e.g. APT-0001) is generated automatically. The system will reject a booking if the same
+        dentist already has an appointment at that exact date and time.</p>
+
+    <h5 class="mt-4">2. Display Appointment Details</h5>
+    <p>Go to <strong>Search</strong> and enter the appointment number to view the full patient and
+        appointment record.</p>
+
+    <h5 class="mt-4">3. Calculate and Print Bill</h5>
+    <p>Go to <strong>Bill</strong>, enter the appointment number, and the system will calculate the total
+        (treatment fee + clinic consultation fee) and mark the appointment as billed. Use the
+        Print Receipt button to print it.</p>
+
+    <h5 class="mt-4">4. All Appointments</h5>
+    <p>View every appointment currently on record, including whether it has been billed.</p>
+
+    <h5 class="mt-4">5. Logout / Exit</h5>
+    <p>Use <strong>Logout</strong> in the navigation bar to safely end your session.</p>
+</div>
+</body>
+</html>

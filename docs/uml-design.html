@@ -1,0 +1,590 @@
+<title>Dental Clinic UML Design</title>
+<style>
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #12161c;
+      --surface: #1a2029;
+      --surface-2: #202834;
+      --text: #e7eaee;
+      --muted: #9aa4b2;
+      --border: #2a313c;
+      --accent: #5fb3a3;
+      --accent-soft: #1c2e2b;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #12161c;
+    --surface: #1a2029;
+    --surface-2: #202834;
+    --text: #e7eaee;
+    --muted: #9aa4b2;
+    --border: #2a313c;
+    --accent: #5fb3a3;
+    --accent-soft: #1c2e2b;
+  }
+  :root {
+    --bg: #f7f8fa;
+    --surface: #ffffff;
+    --surface-2: #f0f2f5;
+    --text: #1b2430;
+    --muted: #5b6472;
+    --border: #e1e4e8;
+    --accent: #2f6f62;
+    --accent-soft: #e6f0ee;
+
+    --serif: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, "Cascadia Mono", "Segoe UI Mono", Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.6;
+    margin: 0;
+    padding: 3rem 1.5rem 6rem;
+  }
+
+  .page {
+    max-width: 880px;
+    margin: 0 auto;
+  }
+
+  header.masthead {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1.75rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 0.6rem;
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(1.9rem, 4vw, 2.5rem);
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+    text-wrap: balance;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 1.02rem;
+    max-width: 60ch;
+  }
+
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-top: 1.25rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .meta-row strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  nav.toc {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 3rem;
+  }
+
+  nav.toc a {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--text);
+    text-decoration: none;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.4rem 0.9rem;
+    background: var(--surface);
+  }
+
+  nav.toc a:hover, nav.toc a:focus-visible {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  section.diagram-section {
+    margin-bottom: 4rem;
+    scroll-margin-top: 1.5rem;
+  }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  .section-num {
+    font-family: var(--serif);
+    font-size: 2.1rem;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  h2 {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  section p {
+    max-width: 70ch;
+  }
+
+  .callout {
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+    padding: 0.9rem 1.1rem;
+    border-radius: 0 8px 8px 0;
+    margin: 1.25rem 0;
+  }
+
+  .callout p {
+    margin: 0;
+    max-width: none;
+  }
+
+  .callout p + p { margin-top: 0.6rem; }
+
+  .callout-label {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+  }
+
+  .diagram-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    overflow-x: auto;
+    margin: 1.5rem 0 0.75rem;
+  }
+
+  .diagram-card :global(svg) { max-width: none; }
+
+  figcaption {
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-family: var(--mono);
+  }
+
+  code {
+    font-family: var(--mono);
+    background: var(--surface-2);
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+
+  .pattern-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .pattern-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.1rem 1.2rem;
+  }
+
+  .pattern-card h3 {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--accent);
+    margin: 0 0 0.5rem;
+    letter-spacing: 0.02em;
+  }
+
+  .pattern-card p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--muted);
+    max-width: none;
+  }
+
+  footer {
+    border-top: 1px solid var(--border);
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+</style>
+
+<div class="page">
+
+  <header class="masthead">
+    <p class="eyebrow">CIS6003 &middot; Task A &middot; System Design</p>
+    <h1>Sunrise Dental Clinic &mdash; UML Design</h1>
+    <p class="subtitle">Use Case, Class, and Sequence diagrams for the appointment &amp; patient management
+      system, derived directly from the implemented Spring Boot codebase (package
+      <code>com.sunrise.dental</code>).</p>
+    <div class="meta-row">
+      <span><strong>Methodology:</strong> Object-Oriented Design (UML 2.5 notation)</span>
+      <span><strong>Modelling tool:</strong> Mermaid</span>
+      <span><strong>Source:</strong> com.sunrise.dental (Spring Boot 3.3.4)</span>
+    </div>
+  </header>
+
+  <nav class="toc" aria-label="Section navigation">
+    <a href="#use-case">01 &middot; Use Case Diagram</a>
+    <a href="#class">02 &middot; Class Diagram</a>
+    <a href="#sequence">03 &middot; Sequence Diagrams</a>
+    <a href="#patterns">Design Patterns</a>
+    <a href="#evaluation">Evaluation</a>
+  </nav>
+
+  <section class="diagram-section" id="use-case">
+    <div class="section-head">
+      <span class="section-num">01</span>
+      <h2>Use Case Diagram</h2>
+    </div>
+    <p>The clinic has a single actor in the current scope: <strong>Staff</strong> (receptionist/dentist
+      administrator), matching the brief's requirement that "only authorized staff can use the system." All
+      seven functional requirements from the scenario map directly onto use cases below.</p>
+
+    <div class="callout">
+      <span class="callout-label">Assumptions</span>
+      <p>No separate "Patient" actor was modelled, since the scenario describes staff entering patient details
+        on their behalf (a walk-in/phone-booking clinic workflow), not patient self-service.</p>
+      <p>A single "Staff" role was assumed rather than distinct Receptionist/Dentist roles, since the brief
+        does not require differentiated permissions &mdash; this is documented here as a deliberate scope
+        decision rather than an oversight.</p>
+    </div>
+
+    <figure class="diagram-card">
+      <pre class="mermaid">
+flowchart LR
+    Staff(["&#128100; Staff"]):::actor
+
+    Staff --> UC1(["Login"])
+    Staff --> UC2(["Register New\nAppointment"])
+    Staff --> UC3(["Display Appointment\nDetails"])
+    Staff --> UC4(["Calculate &amp; Print Bill"])
+    Staff --> UC5(["View All\nAppointments"])
+    Staff --> UC6(["View Help"])
+    Staff --> UC7(["Logout"])
+
+    UC2 -. "&lt;&lt;include&gt;&gt;" .-> UC8(["Validate Patient\nInput"])
+    UC2 -. "&lt;&lt;include&gt;&gt;" .-> UC9(["Check Dentist\nDouble-Booking"])
+    UC4 -. "&lt;&lt;extend&gt;&gt;" .-> UC10(["Print Receipt"])
+
+    classDef actor fill:#e6f0ee,stroke:#2f6f62,stroke-width:2px,color:#1b2430,font-weight:bold;
+    classDef usecase fill:#ffffff,stroke:#5b6472,stroke-width:1px,color:#1b2430;
+    class UC1,UC2,UC3,UC4,UC5,UC6,UC7,UC8,UC9,UC10 usecase;
+      </pre>
+      <figcaption>Fig. 1 &mdash; Use case diagram with &lt;&lt;include&gt;&gt; relationships for mandatory
+        sub-behaviours and an &lt;&lt;extend&gt;&gt; for the optional print step.</figcaption>
+    </figure>
+
+    <p><strong>Design rationale:</strong> "Validate Patient Input" and "Check Dentist Double-Booking" are
+      modelled as <code>&lt;&lt;include&gt;&gt;</code> because <code>AppointmentService.registerAppointment()</code>
+      always performs both steps &mdash; they are not optional. "Print Receipt" is
+      <code>&lt;&lt;extend&gt;&gt;</code> because printing is a UI-triggered optional action after
+      a bill has already been generated, not a mandatory part of billing.</p>
+  </section>
+
+  <section class="diagram-section" id="class">
+    <div class="section-head">
+      <span class="section-num">02</span>
+      <h2>Class Diagram</h2>
+    </div>
+    <p>The class diagram reflects the actual layered architecture: web controllers depend on a single
+      service facade, which coordinates two repositories and a billing strategy. Visibility modifiers
+      mirror the real source &mdash; all entity fields are private with public accessors, consistent with
+      encapsulation.</p>
+
+    <div class="callout">
+      <span class="callout-label">Assumptions</span>
+      <p><code>Appointment</code> and <code>StaffUser</code> have no direct association in the domain model
+        (no "booked by" foreign key) &mdash; the brief does not require attributing an appointment to the
+        staff member who created it, so this was left out of scope.</p>
+    </div>
+
+    <div class="diagram-card">
+      <pre class="mermaid">
+classDiagram
+    class Appointment {
+        -Long id
+        -String appointmentNo
+        -String patientName
+        -String address
+        -String contactNo
+        -String dentistName
+        -String treatmentType
+        -LocalDate appointmentDate
+        -LocalTime appointmentTime
+        -boolean billed
+        -double totalCost
+        +getAppointmentNo() String
+        +getTotalCost() double
+    }
+
+    class StaffUser {
+        -Long id
+        -String username
+        -String password
+        -String role
+        +getUsername() String
+    }
+
+    class AppointmentRepository {
+        <<interface>>
+        +findByAppointmentNo(String) Optional
+        +existsByDentistNameAndAppointmentDateAndAppointmentTime() boolean
+        +findByBilledFalse() List
+    }
+
+    class StaffUserRepository {
+        <<interface>>
+        +findByUsername(String) Optional
+    }
+
+    class BillingStrategy {
+        <<interface>>
+        +calculateTotal(String) double
+    }
+
+    class StandardBillingStrategy {
+        -TreatmentPricingConfig pricingConfig
+        +calculateTotal(String) double
+    }
+
+    class TreatmentPricingConfig {
+        -Map~String,Double~ treatmentPrices
+        +CONSULTATION_FEE double $
+        +getPriceFor(String) double
+        +getAllTreatments() Map
+    }
+
+    class AppointmentService {
+        -AppointmentRepository appointmentRepository
+        -StaffUserRepository staffUserRepository
+        -BillingStrategy billingStrategy
+        +login(String, String) Optional
+        +registerAppointment(Appointment) Appointment
+        +getByAppointmentNo(String) Optional
+        +generateBill(String) Appointment
+        +listAll() List
+        +listUnbilled() List
+    }
+
+    class ClinicController {
+        +registerSubmit(Appointment) String
+        +searchSubmit(String) String
+        +billSubmit(String) String
+    }
+
+    class AuthController {
+        +login(String, String) String
+    }
+
+    class AppointmentRestController {
+        +listAll() ResponseEntity
+        +create(Appointment) ResponseEntity
+        +bill(String) ResponseEntity
+    }
+
+    AppointmentRepository "1" o-- "*" Appointment : persists
+    StaffUserRepository "1" o-- "*" StaffUser : persists
+    StandardBillingStrategy ..|> BillingStrategy : implements
+    StandardBillingStrategy --> TreatmentPricingConfig : uses
+    AppointmentService --> AppointmentRepository : uses
+    AppointmentService --> StaffUserRepository : uses
+    AppointmentService --> BillingStrategy : uses
+    ClinicController --> AppointmentService : uses
+    AuthController --> AppointmentService : uses
+    AppointmentRestController --> AppointmentService : uses
+      </pre>
+    </div>
+    <figcaption>Fig. 2 &mdash; Class diagram showing the Facade (<code>AppointmentService</code>), the
+      Strategy pair (<code>BillingStrategy</code> / <code>StandardBillingStrategy</code>), and the
+      Repository/DAO layer with aggregation multiplicities.</figcaption>
+  </section>
+
+  <section class="diagram-section" id="sequence">
+    <div class="section-head">
+      <span class="section-num">03</span>
+      <h2>Sequence Diagrams</h2>
+    </div>
+    <p>Three representative flows are modelled below, covering authentication, the core write path
+      (registration, including its validation and conflict-checking branches), and the core read/compute
+      path (billing).</p>
+
+    <h3 style="font-family:var(--serif); font-size:1.1rem; margin-top:2rem;">3.1 &mdash; Staff Login</h3>
+    <div class="diagram-card">
+      <pre class="mermaid">
+sequenceDiagram
+    actor Staff
+    participant AuthController
+    participant AppointmentService
+    participant StaffUserRepository
+    participant DB as H2 Database
+
+    Staff->>AuthController: POST /login (username, password)
+    AuthController->>AppointmentService: login(username, password)
+    AppointmentService->>StaffUserRepository: findByUsername(username)
+    StaffUserRepository->>DB: SELECT * FROM staff_user WHERE username = ?
+    DB-->>StaffUserRepository: StaffUser row
+    StaffUserRepository-->>AppointmentService: Optional&lt;StaffUser&gt;
+    alt password matches
+        AppointmentService-->>AuthController: Optional.of(user)
+        AuthController-->>Staff: redirect /home (session set)
+    else invalid credentials
+        AppointmentService-->>AuthController: Optional.empty()
+        AuthController-->>Staff: re-render login (error message)
+    end
+      </pre>
+    </div>
+
+    <h3 style="font-family:var(--serif); font-size:1.1rem; margin-top:2.5rem;">3.2 &mdash; Register New Appointment</h3>
+    <div class="diagram-card">
+      <pre class="mermaid">
+sequenceDiagram
+    actor Staff
+    participant ClinicController
+    participant AppointmentService
+    participant AppointmentRepository
+    participant DB as H2 Database
+
+    Staff->>ClinicController: POST /appointments/new (form data)
+    ClinicController->>AppointmentService: registerAppointment(appointment)
+    AppointmentService->>AppointmentService: validate(appointment)
+    alt validation fails
+        AppointmentService-->>ClinicController: throws ValidationException
+        ClinicController-->>Staff: re-render form (error message)
+    else validation passes
+        AppointmentService->>AppointmentRepository: existsByDentistNameAndAppointmentDateAndAppointmentTime()
+        AppointmentRepository->>DB: SELECT COUNT(*) ...
+        DB-->>AppointmentRepository: count
+        alt clash found
+            AppointmentRepository-->>AppointmentService: true
+            AppointmentService-->>ClinicController: throws DoubleBookingException
+            ClinicController-->>Staff: re-render form (error message)
+        else no clash
+            AppointmentRepository-->>AppointmentService: false
+            AppointmentService->>AppointmentService: generateNextAppointmentNumber()
+            AppointmentService->>AppointmentRepository: save(appointment)
+            AppointmentRepository->>DB: INSERT INTO appointment ...
+            DB-->>AppointmentRepository: saved row
+            AppointmentRepository-->>AppointmentService: Appointment
+            AppointmentService-->>ClinicController: Appointment (with appointmentNo)
+            ClinicController-->>Staff: success message + appointment number
+        end
+    end
+      </pre>
+    </div>
+
+    <h3 style="font-family:var(--serif); font-size:1.1rem; margin-top:2.5rem;">3.3 &mdash; Calculate and Print Bill</h3>
+    <div class="diagram-card">
+      <pre class="mermaid">
+sequenceDiagram
+    actor Staff
+    participant ClinicController
+    participant AppointmentService
+    participant AppointmentRepository
+    participant BillingStrategy as StandardBillingStrategy
+    participant TreatmentPricingConfig
+
+    Staff->>ClinicController: POST /bill (appointmentNo)
+    ClinicController->>AppointmentService: generateBill(appointmentNo)
+    AppointmentService->>AppointmentRepository: findByAppointmentNo(appointmentNo)
+    alt not found
+        AppointmentRepository-->>AppointmentService: Optional.empty()
+        AppointmentService-->>ClinicController: throws AppointmentNotFoundException
+        ClinicController-->>Staff: "No appointment found" message
+    else found
+        AppointmentRepository-->>AppointmentService: Appointment
+        AppointmentService->>BillingStrategy: calculateTotal(treatmentType)
+        BillingStrategy->>TreatmentPricingConfig: getPriceFor(treatmentType)
+        TreatmentPricingConfig-->>BillingStrategy: treatment price
+        BillingStrategy-->>AppointmentService: consultationFee + treatmentPrice
+        AppointmentService->>AppointmentRepository: save(appointment) [billed=true]
+        AppointmentRepository-->>AppointmentService: updated Appointment
+        AppointmentService-->>ClinicController: Appointment (with totalCost)
+        ClinicController-->>Staff: printable receipt
+    end
+      </pre>
+    </div>
+  </section>
+
+  <section class="diagram-section" id="patterns">
+    <div class="section-head">
+      <span class="section-num">&#9670;</span>
+      <h2>Design Patterns Reflected in the Diagrams</h2>
+    </div>
+    <div class="pattern-grid">
+      <div class="pattern-card">
+        <h3>FACADE</h3>
+        <p><code>AppointmentService</code> is the single entry point for all three controller types
+          (Thymeleaf, Auth, REST), hiding repository and billing coordination behind one API.</p>
+      </div>
+      <div class="pattern-card">
+        <h3>STRATEGY</h3>
+        <p><code>BillingStrategy</code> / <code>StandardBillingStrategy</code> lets the billing rule be
+          swapped without touching <code>AppointmentService</code>.</p>
+      </div>
+      <div class="pattern-card">
+        <h3>REPOSITORY / DAO</h3>
+        <p><code>AppointmentRepository</code> and <code>StaffUserRepository</code> isolate persistence
+          concerns from business logic (Spring Data JPA implementation).</p>
+      </div>
+      <div class="pattern-card">
+        <h3>SINGLETON</h3>
+        <p><code>TreatmentPricingConfig</code> is a Spring-managed singleton bean &mdash; one shared price
+          table for the whole application.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="diagram-section" id="evaluation" style="margin-bottom: 1rem;">
+    <div class="section-head">
+      <span class="section-num">&#9670;</span>
+      <h2>Evaluation</h2>
+    </div>
+    <p>Modelling the use cases first surfaced the two mandatory sub-behaviours of registration (validation
+      and double-booking checks) that the brief only implies rather than states, which in turn justified
+      introducing dedicated exception types (<code>ValidationException</code>,
+      <code>DoubleBookingException</code>) rather than a single generic error path &mdash; the sequence
+      diagrams show these as distinct <code>alt</code> branches, which made the corresponding JUnit test
+      cases (one per branch) straightforward to derive directly from the diagram.</p>
+    <p>The main trade-off in the class diagram is that <code>AppointmentService</code> is a fairly wide
+      facade (six public operations). This was judged acceptable at this scale &mdash; splitting it into,
+      say, a separate <code>BillingService</code> would add indirection without a corresponding gain in
+      clarity for a system with only two entities, but it is flagged here as the first extension point if
+      the system grows (e.g. adding invoicing history or multi-branch support).</p>
+  </section>
+
+  <footer>
+    Sunrise Dental Clinic Appointment &amp; Patient Management System &middot; CIS6003 Advanced Programming
+    &middot; Task A supporting document
+  </footer>
+
+</div>

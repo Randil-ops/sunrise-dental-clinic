@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bill - Sunrise Dental Clinic</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragments/nav :: nav}"></div>
+<div class="container" style="max-width: 700px;">
+    <h2>Calculate and Print Bill</h2>
+
+    <form th:action="@{/bill}" method="post" class="row g-2 mb-4">
+        <div class="col-8">
+            <input type="text" name="appointmentNo" class="form-control" placeholder="e.g. APT-0001" required>
+        </div>
+        <div class="col-4">
+            <button type="submit" class="btn btn-primary w-100">Generate Bill</button>
+        </div>
+    </form>
+
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+    <div th:if="${appointment}" class="card" id="receipt">
+        <div class="card-body">
+            <h5 class="card-title text-center">SUNRISE DENTAL CLINIC - RECEIPT</h5>
+            <hr>
+            <p><strong>Appointment No:</strong> <span th:text="${appointment.appointmentNo}"></span></p>
+            <p><strong>Patient Name:</strong> <span th:text="${appointment.patientName}"></span></p>
+            <p><strong>Dentist:</strong> <span th:text="${appointment.dentistName}"></span></p>
+            <p><strong>Date / Time:</strong>
+                <span th:text="${appointment.appointmentDate}"></span> at
+                <span th:text="${appointment.appointmentTime}"></span>
+            </p>
+            <hr>
+            <table class="table">
+                <tr>
+                    <td th:text="${appointment.treatmentType}"></td>
+                    <td class="text-end" th:text="'Rs. ' + ${#numbers.formatDecimal(treatmentFee, 1, 2)}"></td>
+                </tr>
+                <tr>
+                    <td>Clinic Consultation Fee</td>
+                    <td class="text-end" th:text="'Rs. ' + ${#numbers.formatDecimal(consultationFee, 1, 2)}"></td>
+                </tr>
+                <tr class="table-active">
+                    <th>TOTAL PAYABLE</th>
+                    <th class="text-end" th:text="'Rs. ' + ${#numbers.formatDecimal(appointment.totalCost, 1, 2)}"></th>
+                </tr>
+            </table>
+            <button class="btn btn-outline-secondary" onclick="window.print()">Print Receipt</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>
