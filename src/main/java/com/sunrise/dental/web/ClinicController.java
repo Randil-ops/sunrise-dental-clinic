@@ -80,7 +80,8 @@ public class ClinicController {
     // Calculate and Print Bill
     // ------------------------------------------------------------------
     @GetMapping("/bill")
-    public String billForm() {
+    public String billForm(@RequestParam(required = false) String appointmentNo, Model model) {
+        model.addAttribute("appointmentNo", appointmentNo);
         return "bill";
     }
 
@@ -104,6 +105,12 @@ public class ClinicController {
     public String listAll(Model model) {
         model.addAttribute("appointments", appointmentService.listAll());
         return "list";
+    }
+
+    @GetMapping("/appointments/unbilled")
+    public String listUnbilled(Model model) {
+        model.addAttribute("appointments", appointmentService.listUnbilled());
+        return "unbilled";
     }
 
     @GetMapping("/help")
