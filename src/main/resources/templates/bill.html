@@ -12,7 +12,8 @@
 
     <form th:action="@{/bill}" method="post" class="row g-2 mb-4">
         <div class="col-8">
-            <input type="text" name="appointmentNo" class="form-control" placeholder="e.g. APT-0001" required>
+            <input type="text" name="appointmentNo" class="form-control" placeholder="e.g. APT-0001"
+                   th:value="${appointmentNo}" required>
         </div>
         <div class="col-4">
             <button type="submit" class="btn btn-primary w-100">Generate Bill</button>
