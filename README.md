@@ -1,6 +1,6 @@
 # Sunrise Dental Clinic — Appointment & Patient Management System
 
-A Spring Boot web application built for the CIS6003 Advanced Programming coursework
+A web application built for the CIS6003 Advanced Programming coursework
 (Cardiff Metropolitan University). Replaces Sunrise Dental Clinic's paper-based
 appointment booking with a validated, database-backed system.
 
@@ -14,17 +14,7 @@ appointment booking with a validated, database-backed system.
 - **Help Section** — in-app step-by-step guidance for staff
 - **REST API** (`/api/*`) — the same business logic exposed as JSON endpoints
 
-## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Language / Runtime | Java 17 |
-| Framework | Spring Boot 3.3.4 (Web, Data JPA, Validation, Thymeleaf) |
-| Database | H2 (file-based, `./data/clinicdb`) |
-| View | Thymeleaf + Bootstrap 5 |
-| Testing | JUnit 5, Spring Boot Test, MockMvc |
-| Build | Maven |
-| CI | GitHub Actions (`.github/workflows/ci.yml`) — runs the test suite on every push |
 
 ## Design Patterns
 
